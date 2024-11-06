@@ -20,14 +20,30 @@ function template($view, $context) {
     include($file);
     return ob_get_clean();
 }
-switch (uri()) {
-    case '/':
-        require_once dirname(__DIR__)."/app/Controllers/HomeController.php";
-        break;
-    case '/about':
-        require_once dirname(__DIR__)."/app/Controllers/AboutController.php";
-        break;
-    case '/contact':
-        echo "<h1>Contact Page</h1>";
-        break;
+
+$routes = require_once dirname(__DIR__)."/config/routes.php";
+
+$request = trim(uri(), '/');
+
+if (array_key_exists($request, $routes)) {
+    require_once dirname(__DIR__)."/app/Controllers/$routes[$request].php";
+    $controller = new HomeController();
+    $controller->index();
+} else {
+    require_once dirname(__DIR__)."/app/Controllers/ErrorController.php";
+    new ErrorController();
 }
+
+// switch (uri()) {
+//     case '/':
+//         require_once dirname(__DIR__)."/app/Controllers/HomeController.php";
+//         $controller = new HomeController();
+//         $controller->index();
+//         break;
+//     case '/about':
+//         require_once dirname(__DIR__)."/app/Controllers/AboutController.php";
+//         break;
+//     case '/contact':
+//         echo "<h1>Contact Page</h1>";
+//         break;
+// }
