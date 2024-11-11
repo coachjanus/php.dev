@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-require_once "Status.php";
+namespace Core\Http;
+
+// require_once "Status.php";
 class Response
 {
     // private string $body;

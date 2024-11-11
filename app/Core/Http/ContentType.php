@@ -1,7 +1,7 @@
 <?php
 
 declare(strict_types=1);
-
+namespace Core\Http;
 enum ContentType: string
 {
     public const string HEADER = 'Content-Type';

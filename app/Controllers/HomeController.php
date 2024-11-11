@@ -1,11 +1,12 @@
 <?php
 declare(strict_types=1);
+namespace Controllers;
 
-require_once dirname(__DIR__,2)."/app/Core/Response.php";
+// require_once dirname(__DIR__,2)."/app/Core/Response.php";
 
 class HomeController
 {
-    protected Response $response;
+    // protected Response $response;
     public function __construct()
     {
         // echo "Hello Controller";
@@ -15,7 +16,8 @@ class HomeController
     {
         $title = "Welcome to Home Page!";
         $content = render("index", compact("title"));
-        $this->response = new Response($content);
-        $this->response->send();
+        // $this->response = new Response($content);
+        // $this->response->send();
+        return $content;
     }
 }

@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+
+require_once "AutoLoader.php";
 
 function uri() {
     return $_SERVER['REQUEST_URI'];
@@ -19,21 +22,36 @@ function template($view, $context) {
     return ob_get_clean();
 }
 
-require_once dirname(__DIR__)."/app/Core/DotEnv.php";
+// require_once dirname(__DIR__)."/app/Core/DotEnv.php";
 
-(new DotEnv(dirname(__DIR__)."/.env"))->load();
-var_dump($_ENV);
+use Core\DotEnv;
+// use Core\Http\Request;
+// use Core\Http\Response;
+use Core\Http\{Request, Response};
 
-$routes = require_once dirname(__DIR__)."/config/routes.php";
+// (new Core\DotEnv(dirname(__DIR__)."/.env"))->load();
 
-$request = trim(uri(), '/');
+(new DotEnv(filename: dirname(__DIR__)."/.env"))->load();
 
-if (array_key_exists($request, $routes)) {
-    require_once dirname(__DIR__)."/app/Controllers/$routes[$request].php";
-    $controller = new $routes[$request]();
-    $controller->index();
-} else {
-    require_once dirname(__DIR__)."/app/Controllers/ErrorController.php";
-    new ErrorController();
-}
+// var_dump(value: $_ENV);
+use Core\Kernel;
+
+$kernel = new Kernel(enviroment: getenv(name: 'APP_ENV'));
+$request = new Request();
+$response = $kernel->handler(request: $request);
+$response->send();
+
+
+// $routes = require_once dirname(__DIR__)."/config/routes.php";
+
+// $request = trim(uri(), '/');
+
+// if (array_key_exists($request, $routes)) {
+//     require_once dirname(__DIR__)."/app/Controllers/$routes[$request].php";
+//     $controller = new $routes[$request]();
+//     $controller->index();
+// } else {
+//     require_once dirname(__DIR__)."/app/Controllers/ErrorController.php";
+//     new ErrorController();
+// }
 

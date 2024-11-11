@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
-
-class Header
+namespace Core\Http;
+final class Header
 {
     public function __construct(
         public string $name,
