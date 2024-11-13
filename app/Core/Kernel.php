@@ -26,6 +26,8 @@ final class Kernel
 
     public function handler(Request $request): Response
     {
+        // new Core\Router\Router()
+        
         $router = new Router();
         require_once dirname(path: __DIR__, levels: 2)."/config/routes.php";
        
@@ -33,5 +35,10 @@ final class Kernel
 
         $response = new Response(body: $content);
         return $response;
+    }
+
+    public static function projectDir(): string
+    {
+        return dirname(path: __DIR__, levels:2);
     }
 }

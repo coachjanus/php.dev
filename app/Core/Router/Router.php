@@ -25,16 +25,19 @@ final class Router
 
     public function route($uri, $method): mixed
     {
+        // var_export($this->routes);
         foreach ($this->routes as $route) {
-            if ($route['method'] === strtoupper(string: $method)) {
-                if ($route['uri'] === $uri) {
+            if ($route['method'] === strtoupper(string: $method) && $route['uri'] === $uri) {
+                // var_export($route);
+                // if ($route['uri'] === $uri) {
                     $controller = $route['controller'];
                     $action = $route['action'];
                     return (new $controller())->$action();
-                }
+                // }
             }
-            $this->abort();
+            
         }
+        $this->abort();
     }
     protected function abort($code = 404): void
     {

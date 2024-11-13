@@ -1,23 +1,16 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
+
 namespace Controllers;
+use Core\Http\BaseController;
 
-// require_once dirname(__DIR__,2)."/app/Core/Response.php";
-
-class HomeController
+class HomeController extends BaseController 
 {
-    // protected Response $response;
-    public function __construct()
-    {
-        // echo "Hello Controller";
-    }
-
+    protected string $layout = "app";
+   
     public function index()
     {
         $title = "Welcome to Home Page!";
-        $content = render("index", compact("title"));
-        // $this->response = new Response($content);
-        // $this->response->send();
+        $content = $this->view()->render("index", compact("title"));
         return $content;
     }
 }
