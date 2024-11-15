@@ -13,9 +13,11 @@ final class Request
         $this->data = $_REQUEST;
     }
 
-    // public function __get(string $name){
+    public function __get(string $name){
+        if(isset($this->data[$name]))
+        return $this->data[$name] ?? null;
 
-    // }
+    }
 
     public function get(string $key, string $default=null): mixed    
     {

@@ -5,7 +5,7 @@ namespace Core\Http;
 use Core\Kernel;
 use Core\Renderer\View;
 
-class BaseController
+abstract class BaseController
 {
     private View $view;
     protected string $layout;
@@ -19,5 +19,11 @@ class BaseController
     protected function view(): View
     {
         return $this->view;
+    }
+
+    public static function redirect(string $location)
+    {
+        header("Location: http://". $_SERVER['HTTP_HOST'].$location);
+        exit;
     }
 }

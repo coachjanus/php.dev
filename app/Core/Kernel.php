@@ -26,9 +26,8 @@ final class Kernel
 
     public function handler(Request $request): Response
     {
-        // new Core\Router\Router()
         
-        $router = new Router();
+        $router = new Router($request);
         require_once dirname(path: __DIR__, levels: 2)."/config/routes.php";
        
         $content = $router->route(uri: $request->uri(), method: $request->method());
