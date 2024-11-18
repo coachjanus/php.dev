@@ -41,13 +41,37 @@ abstract class QueryBuilder
             implode(", ", array_keys($parameters)),
             ':'.implode(", :", array_keys($parameters))
         );
-        // var_dump($sql);
-        // var_dump($parameters);
+
         try {
         $this->executerStatement($sql, $parameters);
         }catch (PDOException $e) {
             die($e->getMessage());
         }
+    }
+
+    public function update($parameters) {
+        $id = $parameters['id'];
+        if (isset($parameters['id'])) unset($parameters['id']);
+        $values = array_map(function ($key, $value) {
+        return "{$key} = '{$value}'";
+        }, array_keys($parameters), $parameters);
+        $sql = sprintf("UPDATE %s set %s WHERE id = %s", $this->tableName, implode(', ', $values), $id);
+        $statement = $this->connection->prepare($sql);
+        return $statement->execute();
+    }
+
+    public function delete($id)
+    {   
+        $sql = "DELETE from {$this->tableName} WHERE id = {$id}";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+    }
+    public function get($id): mixed
+    {   
+        $sql = "SELECT * from {$this->tableName} WHERE id = {$id}";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_OBJ);
     }
 
 }

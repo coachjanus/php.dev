@@ -35,12 +35,24 @@ final class Router
 
     public function route($uri, $method): mixed
     {
- 
+
         foreach ($this->routes as $route) {
             if ($route['method'] === strtoupper(string: $method) && $route['uri'] === $uri) {
                     $controller = $route['controller'];
                     $action = $route['action'];
                     return (new $controller($this->request))->$action();
+            }
+            else {   
+                $pattern ="%^".preg_replace('/{([a-zA-Z0-9]+)}/',"(?<$1>[0-9]+)", $route['uri'])."$%";
+
+                preg_match(pattern: $pattern, subject: $uri, matches: $matches);
+                // <-
+                array_shift(array: $matches);
+                if ($matches) {
+                    $controller = $route['controller'];
+                    $action = $route['action'];
+                    return (new $controller($this->request))->$action($matches);
+                }
             }
             
         }

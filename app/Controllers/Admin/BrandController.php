@@ -31,6 +31,14 @@ class BrandController extends BaseController
         $title = "New brand";
         return $this->view()->render("admin/brands/create", compact("title"));
     }
+    //  url?id=1 url/1 url/slug
+    public function edit($parameters)
+    {
+        extract($parameters);
+        $title = "Edit brand";
+        $brand = $this->model->get($id);
+        return $this->view()->render("admin/brands/edit", compact("title", "brand"));
+    }
     public function store()
     {
         var_dump([
@@ -45,4 +53,19 @@ class BrandController extends BaseController
         // return $this->redirect('/admin/brands');
 
     }
+
+    public function update() {
+        $this->model->update(['id' => $this->request->get('id'), 'name' => $this->request->get('name'),
+        'description' => $this->request->get('description')]);
+        return $this->redirect('/admin/brands');
+    }
+
+
+    public function destroy($params)
+    {
+        extract($params);
+        $this->model->delete($id);
+        return $this->redirect('/admin/brands');
+    }
+
 }

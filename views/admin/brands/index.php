@@ -22,7 +22,13 @@
             <tr>
                 <td><?=$brand->id?></td>
                 <td><?=$brand->name?></td>
-                <td></td>
+                <td><a href="/admin/brands/edit/<?=$brand->id?>" class="btn btn-success">Edit</a>
+                <form method="post" action="/admin/brands/destroy/<?=$brand->id?>" class="inline-form">
+
+                <input type="submit" value="destroy" class="btn btn-danger inline">
+                </form>
+            
+            </td>
             </tr>
         <?php endforeach?>
     </tbody>
