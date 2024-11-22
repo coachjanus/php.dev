@@ -1,8 +1,8 @@
+
 <div class="mt-1 d-flex justify-content-between">
 <h2><?=$title?></h2>
-<a href="/admin/brands/create" class="btn btn-primary">Add new</a>
+<a href="/admin/categories/create" class="btn btn-primary">Add new</a>
 </div>
-
 <div class="table-responsive small">
 
 <table class="table table-striped table-sm">
@@ -21,16 +21,17 @@
 
     </thead>
     <tbody>
-        <?php foreach ($brands as $brand): ?>
+        <?php foreach ($categories as $category): ?>
             <tr>
-                <td><?=$brand->id?></td>
-                <td><?=$brand->name?></td>
-                <td><a href="/admin/brands/edit/<?=$brand->id?>" class="btn btn-success">Edit</a>
+                <td><?=$category->id?></td>
+                <td><?=$category->name?></td>
+                <td><a href="/admin/categories/edit/<?=$category->id?>" class="btn btn-success">Edit</a>
 
-                <form method="post" action="/admin/brands/destroy/<?=$brand->id?>" style="display:inline-block;">
-                <input type="hidden" name="id" value="<?=$brand->id?>">
+                <form method="post" action="/admin/categories/destroy/<?=$category->id?>" style="display:inline-block;">
+                <input type="hidden" name="id" value="<?=$category->id?>">
                 <input type="submit" value="destroy" class="btn btn-danger inline">
                 </form>
+                
             
             </td>
             </tr>

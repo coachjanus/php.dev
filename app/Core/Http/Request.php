@@ -10,7 +10,24 @@ final class Request
     protected array $data = [];
 
     public function __construct() {
-        $this->data = $_REQUEST;
+        // $this->data = $_REQUEST;
+        $this->data = $this->prepare($_REQUEST, $_FILES);
+    }
+    private function prepare(array $data, array $files): array
+    {
+        $data = $this->clean($data);
+        return array_merge($data, $files);
+    }
+
+    private function clean($data): array|string{
+        if(is_array($data)) {
+            $cleaned = [];
+            foreach($data as $key => $value) {
+                $cleaned[$key] = $this->clean($value);
+            }
+            return $cleaned;
+        }
+        return trim(htmlspecialchars($data, ENT_QUOTES));
     }
 
     public function __get(string $name){

@@ -14,9 +14,11 @@ abstract class QueryBuilder
 
     public function __construct()
     {
-        $config = require_once Kernel::projectDir().'/config/db.php';
-        $this->connection = Connection::make($config['database']);
+
+        $this->connection = Connection::make();
+
         $this->tableName = $this->tableName ?? strtolower((new \ReflectionClass($this))->getShortName()).'s';
+        // var_dump($this->tableName);
     }
     public function selectAll(array $columns = [])
     {
@@ -25,6 +27,15 @@ abstract class QueryBuilder
         $statement = $this->executerStatement($sql);
         return $statement->fetchAll(\PDO::FETCH_CLASS);
     }
+    public function all()
+    {
+        // $fields = $columns ? implode(',', $columns) :'*';
+        $sql = "SELECT * FROM {$this->tableName}";
+        $statement = $this->connection->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_CLASS);
+    }
+
     
     private function executerStatement($sql, $parameters = [])
     {

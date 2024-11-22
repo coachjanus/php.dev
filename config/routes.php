@@ -9,3 +9,17 @@ $router->get('admin/brands/edit/{id}', 'Controllers\Admin\BrandController', 'edi
 $router->post('admin/brands/update', 'Controllers\Admin\BrandController', 'update');
 $router->post('admin/brands/destroy/{id}', 'Controllers\Admin\BrandController', 'destroy');
 
+
+
+$router->get('admin/sections', 'Controllers\Admin\SectionController', 'index');
+$router->get('admin/sections/create', 'Controllers\Admin\SectionController', 'create');
+$router->post('admin/sections/store', 'Controllers\Admin\SectionController', 'store');
+$router->get('admin/sections/edit/{id}', 'Controllers\Admin\SectionController', 'edit');
+$router->post('admin/sections/update', 'Controllers\Admin\SectionController', 'update');
+$router->post('admin/sections/destroy/{id}', 'Controllers\Admin\SectionController', 'destroy');
+
+$router->get('admin/categories', 'Controllers\Admin\CategoryController', 'index');
+
+$router->get('admin/categories/create', 'Controllers\Admin\CategoryController', 'create');
+
+$router->post('admin/categories/store', 'Controllers\Admin\CategoryController', 'store');

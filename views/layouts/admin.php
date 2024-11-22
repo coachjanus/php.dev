@@ -165,6 +165,18 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="/admin/sections">
+                <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+                Sections
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link d-flex align-items-center gap-2" href="/admin/categories">
+                <svg class="bi"><use xlink:href="#file-earmark"/></svg>
+                Categories
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link d-flex align-items-center gap-2" href="#">
                 <svg class="bi"><use xlink:href="#cart"/></svg>
                 Products
@@ -257,8 +269,6 @@
           </button>
         </div>
       </div>
-
-      <h2>Section title</h2>
       {{ content }}
     </main>
   </div>
