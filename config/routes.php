@@ -23,3 +23,7 @@ $router->get('admin/categories', 'Controllers\Admin\CategoryController', 'index'
 $router->get('admin/categories/create', 'Controllers\Admin\CategoryController', 'create');
 
 $router->post('admin/categories/store', 'Controllers\Admin\CategoryController', 'store');
+
+$router->get('admin/categories/edit/{id}', 'Controllers\Admin\CategoryController', 'edit');
+
+$router->post('admin/categories/update', 'Controllers\Admin\CategoryController', 'update');
