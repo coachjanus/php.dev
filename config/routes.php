@@ -1,6 +1,10 @@
 <?php
 
 $router->get('', 'Controllers\HomeController', 'index');
+$router->get('register', 'Controllers\RegisterController', 'index');
+$router->post('signon', 'Controllers\RegisterController', 'register');
+$router->get('login', 'Controllers\LoginController', 'login');
+$router->post('signin', 'Controllers\LoginController', 'signin');
 $router->get('admin', 'Controllers\Admin\Dashboard', 'index');
 $router->get('admin/brands', 'Controllers\Admin\BrandController', 'index');
 $router->get('admin/brands/create', 'Controllers\Admin\BrandController', 'create');
@@ -27,3 +31,14 @@ $router->post('admin/categories/store', 'Controllers\Admin\CategoryController', 
 $router->get('admin/categories/edit/{id}', 'Controllers\Admin\CategoryController', 'edit');
 
 $router->post('admin/categories/update', 'Controllers\Admin\CategoryController', 'update');
+
+
+$router->get('admin/roles', 'Controllers\Admin\RoleController', 'index');
+
+$router->get('admin/roles/create', 'Controllers\Admin\RoleController', 'create');
+
+$router->post('admin/roles/store', 'Controllers\Admin\RoleController', 'store');
+
+$router->get('admin/roles/edit/{id}', 'Controllers\Admin\RoleController', 'edit');
+
+$router->post('admin/roles/update', 'Controllers\Admin\RoleController', 'update');

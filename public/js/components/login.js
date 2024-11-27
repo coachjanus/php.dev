@@ -11,7 +11,7 @@ template.innerHTML = `
     <a href="#!" title="Close" class="close fas fa-times"></a>
      
       <div class="card">
-        <h2>Login</h2>
+        <h2>Sign In</h2>
         <form class="form-container">
           <div class="input-group">
             <label class="form-label">Username or email address<span>*</span></label>
@@ -25,8 +25,9 @@ template.innerHTML = `
           <input type="submit" value="Sing In" />
                 
           <p>
-            <a href="">Forget Password?</a>
+            <a href="">Forget Password?</a> | Not a member? - <a href="/register">Sign on</a>
           </p>
+          
         </form>
       </div>
         
