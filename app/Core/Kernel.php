@@ -22,6 +22,7 @@ final class Kernel
     private function boot(): void
     {
         date_default_timezone_set(timezoneId: getenv(name: 'APP_TIMEZONE') ?? 'UTC');
+        Session::getInstance();
     }
 
     public function handler(Request $request): Response

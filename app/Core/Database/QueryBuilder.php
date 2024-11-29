@@ -85,7 +85,7 @@ abstract class QueryBuilder
         return $statement->fetch(\PDO::FETCH_OBJ);
     }
 
-    public function findBy($condition): 
+    public function findBy($condition)
     {
         $sql = "SELECT * FROM {$this->tableName} WHERE $condition";
         $statement = $this->connection->prepare($sql);

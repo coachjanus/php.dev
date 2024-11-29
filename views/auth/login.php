@@ -1,5 +1,5 @@
 <div class="container mx-auto">
-<form method="post" action="/signon">
+<form method="post" action="/signin">
     
      
     <div class="col-sm-12 mx-t3 mb-4 py-5">
@@ -17,11 +17,7 @@
         <label for="pass">Password</label>
         <input type="Password" name="password" class="form-control" id="pass" placeholder="Enter your password." required>
       </div>
-      <div class="col-10 form-group">
-        <label for="pass2">Confirm Password</label>
-        <input type="Password" name="cnf-password" class="form-control" id="pass2" placeholder="Re-enter your password." required>
-      </div>
-     
+      
 
       <div class="col-sm-10 form-group mb-0">
         <button class="btn btn-primary float-right">Submit</button>

@@ -21,7 +21,7 @@ class RegisterController extends BaseController
    
     public function index()
     {
-        $title = "Sign on";
+        $title = "Sign up";
         $content = $this->view()->render("auth/index", compact("title"));
         return $content;
     }

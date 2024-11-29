@@ -1,10 +1,17 @@
 <?php
 
 $router->get('', 'Controllers\HomeController', 'index');
+
 $router->get('register', 'Controllers\RegisterController', 'index');
+
 $router->post('signon', 'Controllers\RegisterController', 'register');
+
 $router->get('login', 'Controllers\LoginController', 'login');
 $router->post('signin', 'Controllers\LoginController', 'signin');
+$router->get('profile', 'Controllers\ProfileController', 'index');
+
+$router->get('logout', 'Controllers\LoginController', 'logout');
+
 $router->get('admin', 'Controllers\Admin\Dashboard', 'index');
 $router->get('admin/brands', 'Controllers\Admin\BrandController', 'index');
 $router->get('admin/brands/create', 'Controllers\Admin\BrandController', 'create');
