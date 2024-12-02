@@ -3,10 +3,10 @@
 namespace Controllers\Admin;
 
 use Core\Http\BaseController;
-use Core\Http\Request;
 use Models\Brand;
+use Core\Http\Request;
 
-class BrandController extends BaseController 
+class BrandController extends BaseController
 {
     protected string $layout = "admin";
     protected $model;
@@ -15,51 +15,46 @@ class BrandController extends BaseController
     {
         parent::__construct();
         $this->model = new Brand();
-        // var_dump($request);
-        $this->request = $request;  
+        $this->request = $request;
     }
-   
-    public function index()
+
+    public function index(): string
     {
         $title = "All brands";
         $brands = $this->model->selectAll();
-        return $this->view()->render("admin/brands/index", compact("title", "brands"));
-    }
+        return $this->view()->render(view: 'admin/brands/index', context: compact('title',  'brands'));
+    } 
 
     public function create()
     {
         $title = "New brand";
-        return $this->view()->render("admin/brands/create", compact("title"));
+        return $this->view()->render(view: 'admin/brands/create', context: compact(var_name: 'title'));
     }
-    //  url?id=1 url/1 url/slug
-    public function edit($parameters)
-    {
-        extract($parameters);
-        $title = "Edit brand";
-        $brand = $this->model->get($id);
-        return $this->view()->render("admin/brands/edit", compact("title", "brand"));
-    }
+
+
+    /**
+     * Store a new user in the database.
+     */
     public function store()
     {
-        var_dump([
-            'name' => $this->request->get(key: 'name'), 
-            'description' => $this->request->get('description'), 
-        ]);
-
-         $this->model->insert([
-            'name' => $this->request->get(key: 'name'), 
-            'description' => $this->request->get('description'), 
-        ]);
-        // return $this->redirect('/admin/brands');
-
-    }
-
-    public function update() {
-        $this->model->update(['id' => $this->request->get('id'), 'name' => $this->request->get('name'),
-        'description' => $this->request->get('description')]);
+        $this->model->insert(['name' => $this->request->get('name'), 'description' => $this->request->get('description')]);
         return $this->redirect('/admin/brands');
     }
 
+    public function edit($param)
+    {
+        extract($param);
+        $title = "Edit brand";
+        $brand = $this->model->get($id);
+        return $this->view()->render(view: 'admin/brands/edit', context: compact( 'title', 'brand'));
+    }
+
+    public function update()
+    {
+        $this->model->update(['id' => $this->request->get('id'), 'name' => $this->request->get('name'), 'description' => $this->request->get('description')]);
+
+        $this->redirect('/admin/brands');
+    }
 
     public function destroy($params)
     {

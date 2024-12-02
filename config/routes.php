@@ -49,3 +49,13 @@ $router->post('admin/roles/store', 'Controllers\Admin\RoleController', 'store');
 $router->get('admin/roles/edit/{id}', 'Controllers\Admin\RoleController', 'edit');
 
 $router->post('admin/roles/update', 'Controllers\Admin\RoleController', 'update');
+
+$router->get('api/products', 'Controllers\HomeController', 'getProducts');
+
+
+$router->get('admin/products', 'Controllers\Admin\ProductController', 'index');
+$router->get('admin/products/create', 'Controllers\Admin\ProductController', 'create');
+$router->post('admin/products/store', 'Controllers\Admin\ProductController', 'store');
+$router->get('admin/products/edit/{id}', 'Controllers\Admin\ProductController', 'edit');
+$router->post('admin/productss/update', 'Controllers\Admin\ProductController', 'update');
+$router->post('admin/products/destroy/{id}', 'Controllers\Admin\ProductController', 'destroy');

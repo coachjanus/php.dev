@@ -232,13 +232,5 @@ const blogPosts = [
 	  content: "Flexbox is a powerful tool in CSS...",
 	  image: "/images/product-7.jpg",
 	},
-	
-	{
-	  title: "A basic card component with an image",
-	  author: "Samuel Grant",
-	  date: "October 10, 2024",
-	  content: "A basic card component with an image, title, description, and call to action. By default, the image is on top and full-width, but inside larger containers the image is positioned on the left with the rest of the content beside it....",
-	  image: "/images/product-8.jpg",
-	},
 ];
   

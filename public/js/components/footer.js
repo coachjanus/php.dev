@@ -1,10 +1,11 @@
-const template = document.createElement('template');
+const footerTemplate = document.createElement('template');
 
-template.innerHTML = `
-<style>
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css');
+footerTemplate.innerHTML = 
+`<style>
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css");
 @import url('/css/footer.css');
 </style>
+
  <footer class="footer">
       <section class="footer-main">
         <div class="footer-main-item">
@@ -43,8 +44,6 @@ template.innerHTML = `
           </form>
         </div>
       </section>
-
-      <!-- Footer social -->
       <section class="footer-social">
         <div class="footer-social-list">
           <a href="#"><i class="fa-brands fa-google"></i></a>
@@ -55,21 +54,27 @@ template.innerHTML = `
         
       </section>
 
-      <!-- Footer legal -->
       <section class="footer-legal">
           <a href="#">Terms &amp; Conditions</a>
           <a href="#">Privacy Policy</a>
           <span>&copy; 2024 Copyright Shopaholic Inc.</span>
       </section>
-</footer>`;
+    </footer>`;
+
 export default class Footer extends HTMLElement {
+  constructor() {
+    super();
+  }
 
-    constructor() {
-        super();
+  connectedCallback() {
+    const fontAwesome = document.querySelector('link[href*="font-awesome"]');
+    const shadow = this.attachShadow({ mode: 'closed' });
+
+    if (fontAwesome) {
+      shadow.appendChild(fontAwesome.cloneNode());
     }
 
-    connectedCallback() {
-        const shadow = this.attachShadow({mode: 'closed'});
-        shadow.appendChild(template.content);
-    }
+    shadow.appendChild(footerTemplate.content);
+  }
 }
+

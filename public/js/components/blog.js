@@ -1,13 +1,12 @@
 import {posts} from './posts.js';
 
 const template = document.createElement('template');
-
 template.innerHTML = `
 <style>
-@import url('/css/blog.css');
-@import url('/css/button.css');
+    @import '/css/blog.css';
+    @import '/css/button.css';
 </style>
- <svg width="0" height="0" display="none">
+<svg width="0" height="0" display="none">
 
       <symbol id="github" viewBox="0 0 24 24">
         <path d="M12 0.297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385 0.6 0.113 0.82-0.258 0.82-0.577 0-0.285-0.010-1.040-0.015-2.040-3.338 0.724-4.042-1.61-4.042-1.61-0.546-1.385-1.335-1.755-1.335-1.755-1.087-0.744 0.084-0.729 0.084-0.729 1.205 0.084 1.838 1.236 1.838 1.236 1.070 1.835 2.809 1.305 3.495 0.998 0.108-0.776 0.417-1.305 0.76-1.605-2.665-0.3-5.466-1.332-5.466-5.93 0-1.31 0.465-2.38 1.235-3.22-0.135-0.303-0.54-1.523 0.105-3.176 0 0 1.005-0.322 3.3 1.23 0.96-0.267 1.98-0.399 3-0.405 1.020 0.006 2.040 0.138 3 0.405 2.28-1.552 3.285-1.23 3.285-1.23 0.645 1.653 0.24 2.873 0.12 3.176 0.765 0.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92 0.42 0.36 0.81 1.096 0.81 2.22 0 1.606-0.015 2.896-0.015 3.286 0 0.315 0.21 0.69 0.825 0.57 4.801-1.574 8.236-6.074 8.236-11.369 0-6.627-5.373-12-12-12z"></path>
@@ -104,56 +103,55 @@ template.innerHTML = `
       <symbol viewBox="0 0 24 24" id="today">
         <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"></path>
       </symbol>
-    </svg>
+</svg>
 
-    <div id="blog-post-container"></div>
+<div id="blog-post-container"></div>`;
 
- `;
 export default class Posts extends HTMLElement {
 
     constructor() {
         super();
         this.posts = posts;
-        this.shadow = this.attachShadow({mode: 'closed'});
+        this.shadow = this.attachShadow({mode: 'open'});
         this.shadow.appendChild(template.content);
     }
 
-
-    makePostItem = item => `
+    makePostItem = (item) => `
     <article class="blog-post">
-        <div class="post-figure">
-            <img src="${item.image}">
-        </div>
-        <div class="post-body">
-            <h3 class="post-title">${item.name}</h3>
-                <p class="meta">
-                    By <span class="author">${item.author}</span> on <span class="date">${item.date}</span>
-                </p>
-                <p class="post-content">${item.content}</p>
-
-                <div class="icon-actions">
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#thumb_up"></use>
-                            </svg>
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#insert_emoticon"></use>
-                            </svg>
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#favorite"></use>
-                            </svg>
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#insert_comment"></use>
-                            </svg>
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#insert_link"></use>
-                            </svg>
-                            <svg class="icon icon--inline">
-                              <use xlink:href="#share"></use>
-                            </svg>
-                </div>
-                <a href="#" class="read-more">Read More</a>
-            </div>
-    </article>`;
+      <div class="post-figure">
+        <img src="${item.image}" alt="${item.title}">
+      </div>
+      <div class="post-body">
+        <h2 class="post-title">${item.title}</h2>
+        <p class="meta">
+          By <span class="author">${item.author}</span> on <span class="date">${item.date}</span>
+        </p>
+        <div class="post-content">${item.content}</div>
+        <div class="icon-actions">
+    <svg class="icon icon--inline">
+        <use xlink:href="#thumb_up"></use>
+    </svg>
+    <svg class="icon icon--inline">
+        <use xlink:href="#insert_emoticon"></use>
+    </svg>
+    <svg class="icon icon--inline">
+        <use xlink:href="#favorite"></use>
+    </svg>
+    <svg class="icon icon--inline">
+        <use xlink:href="#insert_comment"></use>
+    </svg>
+    <svg class="icon icon--inline">
+        <use xlink:href="#insert_link"></use>
+    </svg>
+    <svg class="icon icon--inline">
+        <use xlink:href="#share"></use>
+    </svg>
+</div>
+                
+        <a href="#" class="read-more">Read More</a>
+      </div>
+  </article>`;
+    
 
     makeBlog = () => {
         let res = '';
@@ -162,9 +160,11 @@ export default class Posts extends HTMLElement {
         });
         return res;
     }
-
+    
     connectedCallback() {
-        const blogPostContainer = this.shadow.getElementById('blog-post-container');
-        blogPostContainer.innerHTML = this.makeBlog();
+        const blogPostContainer = this.shadow.querySelector('#blog-post-container');
+        blogPostContainer.innerHTML = this.makeBlog()
     }
+
 }
+ 
