@@ -5,6 +5,7 @@ namespace Core;
 
 use Core\Http\{Request, Response};
 use Core\Router\Router;
+use Core\Session;
 
 final class Kernel
 {
@@ -22,10 +23,10 @@ final class Kernel
     private function boot(): void
     {
         date_default_timezone_set(timezoneId: getenv(name: 'APP_TIMEZONE') ?? 'UTC');
-        Session::getInstance();
+        Session::instance();
     }
 
-    public function handler(Request $request): Response
+    public function handler(Request $request)
     {
         
         $router = new Router($request);
@@ -33,8 +34,10 @@ final class Kernel
        
         $content = $router->route(uri: $request->uri(), method: $request->method());
 
-        $response = new Response(body: $content);
-        return $response;
+        // $response = new Response(body: $content);
+        // if ($response instanceof Response)
+        // return $response;
+        return $content;
     }
 
     public static function projectDir(): string

@@ -1,124 +1,80 @@
 <?php
-declare(strict_types=1);
 
 namespace Core\Http;
 
-// require_once "Status.php";
 class Response
 {
-    // private string $body;
-    // private string $status;
-    // private array $headers=[];
-    public function __construct(
-        private string $body,
-        private Status $status = Status::OK,
-        private array $headers=[]
-    )
+    public static array $statusTexts = [
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        301 => 'Moved Permanently',
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        500 => 'Internal Server Error',
+    ];
+
+    private string $content;
+    private int $status;
+    private string $statusText;
+    private array $headers;
+    private string $version = '1.0';
+
+    public function __construct(string $content = '', int $status = 200, array $headers = [])
     {
+        $this->content = $content;
         $this->status = $status;
-        $this->body = $body;
-
-        foreach ($headers as $key => $values) {
-            if(!is_array($values)) {
-                $values = [$values];
-            }
-            foreach ($values as $value) {
-                $this->addHeader($key, $value);
-            }
-        }
-    }
-    
-    public function addHeader(string $key, string $value): self 
-    {
-        $this->headers[$key] ??= new Header($key);
-        $this->headers[$key]->add($value);
-        return $this;
+        $this->statusText = self::$statusTexts[$status] ?? 'unknown status';
+        $this->headers = $headers;
     }
 
-    public function removeHeader(string $key): self
+    public function getContent(): ?string
     {
-        unset($this->headers[$key]);
-        return $this;
+        return $this->content;
     }
 
-    public function getBody()
-    {
-        return $this->body;
-    }
-    public function getStatus()
+    public function getStatusCode(): int
     {
         return $this->status;
     }
 
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->headers;
     }
 
-    public function getHeader($name)
+    public function getProtocolVersion(): string
     {
-        return $this->headers[$name] ?? null;
+        return $this->version;
     }
 
-    public function setStatus(Status $status):self
+    public function getStatusText(): string
     {
-        $this->status = $status;
-        return $this;
+        return $this->statusText;
     }
 
-    public function setContentType(ContentType $contentType):self
+    public function send(): void
     {
-        $this
-            ->removeHeader(ContentType::HEADER)->addHeader(ContentType::HEADER, $contentType->value);
-        return $this;
-    }
+        $httpLine = sprintf('HTTP/%s %s %s',
+            $this->getProtocolVersion(),
+            $this->getStatusCode(),
+            $this->getStatusText()
+        );
 
-    public function send()
-    {
-        ob_start();
-        $this->sendHeaders();
-        ob_flush();
-        $this->sendContent();
-        return ob_end_flush();
-    }
+        if (!headers_sent()) {
+            header($httpLine, true, $this->getStatusCode());
 
-    public function sendHeaders()
-    {
-        if (headers_sent()) return;
-
-        foreach ($this->resolveHeaders() as $header) {
-            header($header);
-        }
-        http_response_code($this->getStatus()->value);
-    }
-
-    public function resolveHeaders() 
-    {
-        $headers =$this->getHeaders();
-
-        foreach($headers as $key => $header) {
-            foreach($header->values as $value) {
-                yield "{$key}: {$value}";
+            foreach ($this->getHeaders() as $name => $value) {
+                header("$name: $value", false);
             }
         }
-    }
 
-    private function sendContent()
-    {
-        foreach($this->resolveBody() as $content) {
-            echo $content;
-            ob_flush();
-        }
-
-    }
-    private function resolveBody()
-    {
-        $body = $this->getBody();
-
-        if (is_array(($body))) {
-            yield json_encode($body);
-        } else {
-            yield $body;
-        }
+        echo $this->getContent();
     }
 }

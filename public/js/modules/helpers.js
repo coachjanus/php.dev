@@ -56,3 +56,11 @@ export async function fetchData(url){
         return response.json()
     })
 }
+
+export async function isAuth(url) {
+    return await fetch(`${url}/api/auth`, {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json());
+}

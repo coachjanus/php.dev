@@ -1,6 +1,6 @@
 <section class="py-5 mb-3" id="cart-page">
-<h1><?=$title;?></h1>  
-<div class="responsive-container cart-container mb-3">
+  <h1><?=$title;?></h1>  
+  <div class="responsive-container cart-container mb-3">
   
     <main>
       <table class="table">
@@ -38,14 +38,13 @@
                               </tr>
                               
                           </tbody>
-                        </table>
-              
-                  </main>
+      </table>    
+    </main>
                       
-                  <aside class="sidebar">
-                    <h2 class="text-uppercase mb-4">Cart total</h2>
-                    <div class="card border-0 rounded-0 p-lg-4 bg-light">
-                      <div class="card-body">
+    <aside class="sidebar">
+      <h2 class="text-uppercase mb-4">Cart total</h2>
+      <div class="card border-0 rounded-0 p-lg-4 bg-light">
+        <div class="card-body">
                         <ul class="list-unstyled mb-0">
                           <li class="d-flex">
                             <strong class="text-uppercase">Subtotal</strong>
@@ -69,10 +68,14 @@
                             </form>
                           </li>
                         </ul>
-                      </div>
-                    </div>
+        </div>
+
+      </div>
+      <div class="cart-footer bg-light">
+        <a class="btn btn-hero checkout" href="#!" id="checkout">Checkout</a>              
+      </div>
+
+    </aside>
+  </div>
               
-                  </aside>
-                </div>
-              
-              </section>
+</section>

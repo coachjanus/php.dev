@@ -5,25 +5,24 @@ namespace Core\Http;
 use Core\Kernel;
 use Core\Renderer\View;
 
-abstract class BaseController
+class BaseController
 {
     private View $view;
     protected string $layout;
-
-    public function __construct()
+    // protected string $config;
+    public function __construct() 
     {
-        $path = Kernel::projectDir() ."/views";
-        $this->view = new View(path: $path, layout: $this->layout);
+        $templates = Kernel::projectDir()."/views";
+        $this->view = new View(path: $templates, layout: $this->layout);
+    }
 
+    public static function redirect($location)
+    {
+        header('Location: http://'.$_SERVER['HTTP_HOST'].$location);
+        exit();
     }
     protected function view(): View
     {
         return $this->view;
-    }
-
-    public static function redirect(string $location)
-    {
-        header("Location: http://". $_SERVER['HTTP_HOST'].$location);
-        exit;
     }
 }

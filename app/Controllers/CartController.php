@@ -1,7 +1,7 @@
 <?php
 namespace Controllers;
 
-use Core\Http\{BaseController, Request};
+use Core\Http\{BaseController, Request,Response};
 // use Core\Interfaces\AuthInterface;
 use Core\{Session};
 use Models\{User, Order};
@@ -9,38 +9,26 @@ use Models\{User, Order};
 class CartController extends BaseController //implements AuthInterface
 {
     protected string $layout = 'app';    
-
     protected $model;
-    protected Order $order;
+    protected $user;
+    protected $userId;
 
     public function __construct(private Request $request)
     {
         parent::__construct();
-        $this->model = new User();
         $this->request = $request;
-        $userId = Session::instance()->get('userId');
-        // if($userId) {
-        //     $this->model = (new User)->first($userId);
-        // } 
+        $this->model = new Order();
+        
 
-        // $this->isGranted();
-        // $this->order = new Order();
+        $this->userId = Session::instance()->get('userId');
+     
+
+        if($this->userId) {
+            $this->user = (new User())->get($this->userId);
+        } 
+
+        $this->isGranted();
     }
-
-
-    // public function __construct(private Request $request){
-    //     $this->request = $request;
-    //     parent::__construct();
-    //     $userId = Session::instance()->get('userId');
-
-    //     if($userId) {
-    //         $this->user = (new User)->first($userId);
-    //     } 
-
-    //     $this->isGranted();
-    //     $this->order = new Order();
-    // }
-
 
     public function isGranted(string $name = 'customer'):bool
     {
@@ -52,14 +40,15 @@ class CartController extends BaseController //implements AuthInterface
 
     public function index()
     {
+
         $title = "Cart page";
-        return $this->view()->render(view: 'cart', context: compact(var_name: 'title'));
+        return new Response($this->view()->render(view: 'cart', context: compact(var_name: 'title')));
     }
 
     public function auth()
     {
         if($this->user) {
-            echo json_encode($this->user->id);
+            echo json_encode($this->userId);
         } else {
             echo json_encode(false);
         } 
@@ -67,19 +56,10 @@ class CartController extends BaseController //implements AuthInterface
 
     public function checkout()
     {
-        if (!$this->user) {
-            $this->redirect('/login');
-        }
-
-        if (!$this->request->isMethodPost()) {
-            throw new \Exception("Only POST requests are allowed!");
-        }
-
-        if (!$this->request->isJson()) {
-            throw new \Exception("Content-Type must be application/json!");
-        }
-
         $content = trim(file_get_contents("php://input"));
+
+        // var_dump($content);
+        // exit;
         $decoded = json_decode($content, true);
         if (!is_array($decoded)) {
             throw new \Exception("Failed to decode json object!");
@@ -87,28 +67,14 @@ class CartController extends BaseController //implements AuthInterface
 
         $productsInCart = json_encode($decoded['cart']);
 
-        $this->order->user_id = $this->user->id;
-        $this->order->products = $productsInCart;
+        // try {
+            $userId = Session::instance()->get('userId');
 
-        try {
-            $sql = "INSERT INTO orders (user_id, products) VALUES (?, ?)";
-            $result = $this->order->insert($sql, [$this->user->id, $productsInCart]);
-
-            $options = [
-                'error' => false,
-                'message' => "Everything OK",
-                'result' => $result
-            ];
-            echo json_encode($options);
-        } catch(\Exception $e) {
-            $options = [
-                'error' => true,
-                'message' => $e->getMessage(),
-                'result' => $result
-            ];
-            echo json_encode($options);
-        }
-
-
+            $result = $this->model->insert([
+                'user_id' => $userId, 
+                'products' => $productsInCart, 
+            ]);
+            
+        $this->redirect('/cart');
     }
 }

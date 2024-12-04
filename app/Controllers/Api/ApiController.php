@@ -1,27 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace Controllers;
+namespace Controllers\Api;
 
-use Core\Http\{BaseController, Request, Response};
+use Core\Http\{Request, JsonResponse};
 use Models\{Product};
 
-class HomeController extends BaseController
+class ApiController
 {
-    protected string $layout = "app";
+    // protected string $layout = "app";
     protected $model;
 
     public function __construct(private Request $request)
     {
-        parent::__construct();
         $this->model = new Product();
         $this->request = $request;
     }
 
-    public function index(): Response
-    {
-        $title = "Home page";
-        return new Response($this->view()->render(view: 'index', context: compact(var_name: 'title'))) ;
-    } 
 
     public function getProducts()
     {
@@ -38,7 +32,7 @@ class HomeController extends BaseController
             "badges"=>"badge_id"
         ])->getAll();
 
-        echo json_encode($products);
-        return "";
+        $response = new JsonResponse($products);
+        return $response;
     }
 }

@@ -3,6 +3,11 @@ import Home from '/js/modules/home.js';
 import Catalog from '/js/modules/catalog.js';
 import Cart from '/js/modules/cart.js';
 
+// import { isAuth} from '/js/modules/helpers.js';
+
+
+import Store from '/js/modules/store.js';
+
 import Footer from '/js/components/footer.js';
 customElements.define('footer-component', Footer);
 
@@ -73,8 +78,8 @@ function main() {
     initNav();
 
     
-    // const url = "http://dev.loc";
-    const url = "http://localhost:8000";
+    const url = "http://dev.loc";
+    // const url = "http://localhost:8000";
     function signIn() {
         const loginComponent = document.querySelector('login-component');
         const shadowRoot = loginComponent.shadowRoot; 
@@ -185,15 +190,69 @@ function main() {
         });
     }
 
+
+    async function isAuth(url) {
+        return await fetch(`${url}/api/auth`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(response => response.json());
+    }
+
     const cartPage = document.getElementById('cart-page');
     if(cartPage) {
         
         const shoppingCartItems = cartPage.querySelector('.shopping-cart-items');
         shoppingCartItems.innerHTML = shoppingCart.populateShoppingCart(products);
         shoppingCart.renderCart(shoppingCartItems);
+
+        
+
+        isAuth(url).then(auth => {
+            console.log('auth: ', auth);
+        //   if(auth) {
+            // console.log(document.getElementById('checkout'))
+            document.getElementById('checkout').addEventListener("click", () => {
+                let inCart = [];
+                Store.get("basket").forEach(item =>{
+                    inCart.push({
+                        id:parseInt(item.id),
+                        amount: parseInt(item.amount)
+                    });
+                    console.log(inCart);
+                });
+
+                console.log(inCart);
+
+                console.log(JSON.stringify({
+                    cart: inCart
+                }));
+                fetch("api/checkout", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        cart: inCart
+                    })
+                })
+                .then(
+                    response => {
+                        console.log(response);
+                        Store.clear();
+                        document.location.replace("/profile");
+                    }
+                )
+                .catch(error => console.log(error));
+
+
+            }) //checkout
+                    
+        //   }
+        })
+
     }
 
-    // const blogPage = document.getElementById('blog-page');
 });
     
 }

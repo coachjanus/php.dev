@@ -12,6 +12,10 @@ $router->get('profile', 'Controllers\ProfileController', 'index');
 
 $router->get('logout', 'Controllers\LoginController', 'logout');
 
+
+$router->get('cart', 'Controllers\CartController', 'index');
+$router->post('api/checkout', 'Controllers\CartController', 'checkout');
+
 $router->get('admin', 'Controllers\Admin\Dashboard', 'index');
 $router->get('admin/brands', 'Controllers\Admin\BrandController', 'index');
 $router->get('admin/brands/create', 'Controllers\Admin\BrandController', 'create');
@@ -50,7 +54,7 @@ $router->get('admin/roles/edit/{id}', 'Controllers\Admin\RoleController', 'edit'
 
 $router->post('admin/roles/update', 'Controllers\Admin\RoleController', 'update');
 
-$router->get('api/products', 'Controllers\HomeController', 'getProducts');
+
 
 
 $router->get('admin/products', 'Controllers\Admin\ProductController', 'index');
@@ -59,3 +63,7 @@ $router->post('admin/products/store', 'Controllers\Admin\ProductController', 'st
 $router->get('admin/products/edit/{id}', 'Controllers\Admin\ProductController', 'edit');
 $router->post('admin/productss/update', 'Controllers\Admin\ProductController', 'update');
 $router->post('admin/products/destroy/{id}', 'Controllers\Admin\ProductController', 'destroy');
+
+$router->get('api/products', 'Controllers\Api\ApiController', 'getProducts');
+$router->get('api/auth', 'Controllers\Api\ApiAuthController', 'auth');
+// $router->post('api/checkout', 'Controllers\Api\ApiCheckout', 'checkout');

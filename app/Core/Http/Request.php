@@ -1,26 +1,37 @@
 <?php
-
+// app/Core/Http/Request.php
 declare(strict_types=1);
 
 namespace Core\Http;
 
-
 final class Request
 {
-    protected array $data = [];
+    /**
+     * The request data.
+     *
+     * @var array
+     */
+    protected array $data;
 
-    public function __construct() {
+    /**
+     * Request constructor.
+     */
+    public function __construct()
+    {
         // $this->data = $_REQUEST;
         $this->data = $this->prepare($_REQUEST, $_FILES);
-    }
-    private function prepare(array $data, array $files): array
-    {
-        $data = $this->clean($data);
-        return array_merge($data, $files);
+
     }
 
-    private function clean($data): array|string{
-        if(is_array($data)) {
+    private function prepare(array $request, array $files)
+    {
+        $request = $this->clean($request);
+        return array_merge($files, $request);
+    }
+
+    private function clean($data)
+    {
+        if (is_array($data)) {
             $cleaned = [];
             foreach($data as $key => $value) {
                 $cleaned[$key] = $this->clean($value);
@@ -30,23 +41,47 @@ final class Request
         return trim(htmlspecialchars($data, ENT_QUOTES));
     }
 
-    public function __get(string $name){
-        if(isset($this->data[$name]))
-        return $this->data[$name] ?? null;
 
-    }
-
-    public function get(string $key, string $default=null): mixed    
+    /**
+     * Get parameter from the global request array.
+     *
+     * @param string      $key
+     * @param string|null $default
+     *
+     * @return mixed|null
+     */
+    public function get(string $key, string $default = null): mixed
     {
         return $this->data[$key] ?? $default;
     }
-    public function uri(): string
+
+    public function __get($name)
     {
-        return trim(string: parse_url(url: $_SERVER['REQUEST_URI'], component: PHP_URL_PATH), characters: '/');
+        if(isset($this->data[$name])) {
+            return $this->data[$name];
+        }
     }
 
-    public function method(): string
+    /**
+     * Fetch the request URI.
+     *
+     * @return string
+     */
+    public static function uri(): string
     {
-        return $_SERVER['REQUEST_METHOD'] ??'GET';
+        return trim(
+            string: parse_url(url: $_SERVER['REQUEST_URI'], component: PHP_URL_PATH), characters: '/'
+        );
     }
+
+    /**
+     * Fetch the request method.
+     *
+     * @return string
+     */
+    public static function method(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+    
 }

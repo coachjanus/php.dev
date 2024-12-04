@@ -148,7 +148,7 @@ abstract class QueryBuilder
     {
         $statement = $this->pdo->prepare($this->query());
         $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_OBJ);
+        return $statement->fetchAll();
     }
 
     public function findBy($condition)

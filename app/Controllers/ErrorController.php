@@ -1,9 +1,3 @@
 <?php
 
-class ErrorController
-{
-    public function __construct()
-    {
-        echo "<h1>404</h1>";
-    }
-}
+require dirname(__DIR__, 2) . '/views/error.php';

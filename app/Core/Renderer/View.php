@@ -2,31 +2,58 @@
 
 namespace Core\Renderer;
 
+// use Layout;
 final class View
 {
+    
+    /**
+     * Template constructor.
+     * @param string $path
+     * @param string $layout
+     * @param array $parameters
+     */
     public function __construct(private string $path, protected string $layout, private array $parameters = [])
     {
-        $this->path = rtrim(string: $path,characters: "/") ."/";
-        $this->layout = $layout;
+        $this->path = rtrim(string: $path, characters: '/').'/';
+        $this->layout =  $layout;
         $this->parameters = $parameters;
     }
+  
+    /**
+     * @param string $view
+     * @param array $context
+     * @return string
+     * @throws \Exception
+     */
     public function render(string $view, array $context = []): string
     {
-        ob_start();
-        $content = $this->template($view, $context);
-
-        require_once "{$this->path}/layouts/{$this->layout}.php";
-        return str_replace("{{ content }}", $content, ob_get_clean());
+        ob_start(null, 2048);
+        
+        $layoutInstance = Layout::getInstance(path: $this->path, layout: $this->layout);
+        
+        $content = $this->load(view: $view, context: $context);
+        
+        return str_replace(search: "{{ content }}", replace: $content, subject: ob_get_clean());
     }
 
-    private function template($view, $context) {
-        if(!file_exists($file = $this->path.$view.".php")) {
-            throw new \Exception("The file could not be found.");
+    private function load(string $view, array $context) : string
+    {
+        if (!file_exists(filename: $file = $this->path.$view.".php")) {
+            throw new \Exception(message: sprintf(format: 'The file %s could not be found.', values: $file));
         }
+
         ob_start();
-        extract($context);
-        include($file); 
+        extract(array: $context);
+        include ($file);
         return ob_get_clean();
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function get(string $key): mixed
+    {
+        return $this->parameters[$key] ?? null;
+    }
 }
